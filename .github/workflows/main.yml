@@ -3,6 +3,17 @@ on: [push]
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        os: [ubuntu-latest]
+        include:
+          - python-version: 3.x
+            os: ubuntu-latest
+            experimental: true
+          - python-version: 3.x
+            os: ubuntu-latest
     name: A job to say hello
     steps:
       # To use this repository's private action,
@@ -21,17 +32,3 @@ jobs:
         with:
           name: my-artifact
           path: actions/artifact
-  tests:
-    runs-on: ubuntu-latest
-    name: Tests
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
-        os: [ubuntu-latest]
-        include:
-          - python-version: 3.x
-            os: ubuntu-latest
-            experimental: true
-          - python-version: 3.x
-            os: ubuntu-latest
