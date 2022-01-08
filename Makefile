@@ -26,7 +26,6 @@ help:
 setup:
 	
 	@echo "Checking if project files are generated..."
-	done
 
 # The ${} notation is specific to the make syntax and is very similar to bash's $() 
 # This function uses pytest to test our source files
