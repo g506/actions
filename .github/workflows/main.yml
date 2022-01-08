@@ -38,7 +38,10 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v2
     - name: build application
-      run: make
+      run: |
+        make setup
+        make test
+        make run
   Testing_Job:
     runs-on: ubuntu-latest
     steps:
