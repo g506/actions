@@ -26,16 +26,15 @@ help:
 setup:
 	
 	@echo "Checking if project files are generated..."
-	# [ -d project_files.project ] || (echo "No directory found, generating..." && mkdir project_files.project)
-	# for FILE in ${FILES}; do \
-	# 	touch "project_files.project/$${FILE}.txt"; \
-	# done
+	done
 
 # The ${} notation is specific to the make syntax and is very similar to bash's $() 
 # This function uses pytest to test our source files
 test:
+	pip install pytest
+	pip install coverage
 	${PYTHON} -m pytest test.py
-	
+	${PYTHON} coverage -m pytest test.py	
 run:
 	./entrypoint.sh
 
