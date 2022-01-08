@@ -79,5 +79,16 @@ jobs:
           path: junit/test-results-${{ matrix.python-version }}.xml
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
-    
-
+        
+  sonarqube:
+    needs: test
+    name: SonarQube
+    runs-on: self-hosted
+    steps:
+    - uses: philips-software/sonar-scanner-action@<version>
+      with:
+        token: ${{ secrets.SONARQUBE_TOKEN }}
+        projectName: My Project Name
+        projectKey: project.key.from.sonar.qube
+        url: https://your.sonar.instance.io/
+        isCommunityEdition: true
