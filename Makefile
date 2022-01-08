@@ -4,6 +4,6 @@ PIP = $(VENV)/bin/pip
 run: $(VENV)/bin/activate
 dump: ./entrypoint.sh
 clean:
-  rm -rf __pycache__
-  rm -rf $(VENV)
+ rm -rf __pycache__
+ rm -rf $(VENV)
 build: run dump clean
