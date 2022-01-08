@@ -13,3 +13,5 @@ $(VENV)/bin/activate: requirements.txt
 clean:
  rm -rf __pycache__
  rm -rf $(VENV)
+
+build: run clean
