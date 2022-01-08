@@ -1,7 +1,29 @@
 on: [push, pull_request]
 
 jobs:
-  hello_world_job:
+  make:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v2
+    - name: build application
+      run: |
+        make setup
+        make test
+        make run
+  lint:
+    needs: make
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+  matrix:
+    needs: lint
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -32,27 +54,8 @@ jobs:
         with:
           name: my-artifact
           path: artifact/
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout repo
-      uses: actions/checkout@v2
-    - name: build application
-      run: |
-        make setup
-        make test
-        make run
-  Lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Lint with flake8
-        run: |
-          pip install flake8
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-  Testing_Job:
+  test:
+    needs: matrix
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -60,6 +63,7 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.6
+          cache: 'pip'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -76,3 +80,5 @@ jobs:
           path: junit/test-results-${{ matrix.python-version }}.xml
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
+    
+
