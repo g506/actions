@@ -5,7 +5,7 @@ PIP = $(VENV)/bin/pip
 run: $(VENV)/bin/activate
  
 dump: 
-    ./entrypoint.sh
+ ./entrypoint.sh
 
 $(VENV)/bin/activate: requirements.txt
  python3 -m venv $(VENV)
