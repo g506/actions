@@ -31,9 +31,7 @@ setup:
 # This function uses pytest to test our source files
 test:
 	pip install pytest
-	pip install coverage
 	${PYTHON} -m pytest test.py
-	${PYTHON} coverage -m pytest test.py	
 run:
 	./entrypoint.sh
 
