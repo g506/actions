@@ -48,7 +48,7 @@ jobs:
       - name: Run tests with pytest
         run: pytest test.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
       - name: Coverage for tests
-        run: covergae run -m pytest test.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+        run: coverage run -m pytest test.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
       - name: Upload pytest test results
         uses: actions/upload-artifact@v2
         with:
