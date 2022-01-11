@@ -78,20 +78,21 @@ jobs:
           name: pytest-results-${{ matrix.python-version }}
           path: junit/test-results-${{ matrix.python-version }}.xml
         # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
+        if: ${{ always() }}     
         
-#   sonarqube:
-#     needs: test
-#     name: SonarQube
-#     runs-on: self-hosted
-#     steps:
-#     - uses: philips-software/sonar-scanner-action@<version>
-#       with:
-#         token: ${{ secrets.SONARQUBE_TOKEN }}
-#         projectName: My Project Name
-#         projectKey: project.key.from.sonar.qube
-#         url: https://your.sonar.instance.io/
-#         isCommunityEdition: true
+  sonarqube:
+    runs-on: ubuntu-lates
+    needs: test
+    name: 'Run an analysis of the master branch'
+    env:
+      # to get access to secrets.SONAR_TOKEN, provide GITHUB_TOKEN
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: sonar-scanner
+            -Dsonar.host.url=${{ secrets.SONAR_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.scm.provider=git
+            -Dsonar.java.binaries=/tmp
 #   continuous-deployment:
 #     runs-on: ubuntu-latest
 #     needs: [sonarqube]
